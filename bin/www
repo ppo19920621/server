@@ -17,6 +17,7 @@ var config = require('../config/index');
 var port = normalizePort(config.port || 3000);
 app.set('port', port);
 
+
 /**
  * Create HTTP server.
  */
@@ -30,6 +31,8 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+console.info('http://localhost:'+port)
 
 /**
  * Normalize a port into a number, string, or false.
