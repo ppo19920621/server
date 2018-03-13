@@ -28,8 +28,8 @@ router.get('/count', function(req, res, next) {
 });
 
 router.get('/insertOne', function(req, res, next) {
-
-	db.Test.insertOne({1:9,3:4}).then((list) => {
+	let document = {id:1,name:'111',age:11};
+	db.Test.insertOne(document).then((list) => {
 		res.send(JSON.stringify(list));
 	}).catch((e) => {
 		res.send(e)	
@@ -38,8 +38,8 @@ router.get('/insertOne', function(req, res, next) {
 
 router.get('/insertMany', function(req, res, next) {
 	let data = [
-		{1:2,5:6},
-		{2:6,3:7}
+		{id:2,name:'222',age:22},
+		{id:3,name:'333',age:22},
 	]
 	db.Test.insertMany(data).then((list) => {
 		res.send(JSON.stringify(list));
@@ -49,7 +49,7 @@ router.get('/insertMany', function(req, res, next) {
 });
 
 router.get('/updateOne', function(req, res, next) {
-	let query = {1:20};
+	let query = {id:1};
 	let update = {$set:{'ss':10}}
 	db.Test.updateOne(query,update,true).then((list) => {
 		res.send(JSON.stringify(list));
@@ -59,8 +59,8 @@ router.get('/updateOne', function(req, res, next) {
 });
 
 router.get('/updateMany', function(req, res, next) {
-	let query = {1:2};
-	let update = {$set:{'ss':2}}
+	let query = {age:22};
+	let update = {$set:{'ss':22}}
 	db.Test.updateMany(query,update,true).then((list) => {
 		res.send(JSON.stringify(list));
 	}).catch((e) => {
@@ -69,7 +69,7 @@ router.get('/updateMany', function(req, res, next) {
 });
 
 router.get('/deleteOne', function(req, res, next) {
-	let query = {1:20};
+	let query = {id:1};
 	db.Test.deleteOne(query).then((list) => {
 		res.send(JSON.stringify(list));
 	}).catch((e) => {
@@ -78,7 +78,7 @@ router.get('/deleteOne', function(req, res, next) {
 });
 
 router.get('/deleteMany', function(req, res, next) {
-	let query = {1:2};
+	let query = {age:22};
 	db.Test.deleteMany(query).then((list) => {
 		res.send(JSON.stringify(list));
 	}).catch((e) => {
@@ -88,7 +88,7 @@ router.get('/deleteMany', function(req, res, next) {
 
 router.get('/aggregate', function(req, res, next) {
 	let aggregate = [
-		{$group:{_id:'$ss',num:{$sum:1}}}
+		{$group:{_id:'$age',num:{$sum:1}}}
 	]
 	db.Test.aggregate(aggregate).then((list) => {
 		res.send(JSON.stringify(list));

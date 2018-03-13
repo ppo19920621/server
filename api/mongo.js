@@ -1,20 +1,38 @@
-var mongodb = require('mongodb');
-var utils = require('./utils');
-var MongoClient = mongodb.MongoClient;
-var mongodb_config = require('../config/index').mongodb_config;
-var url = 'mongodb://'+mongodb_config.url+':27017/';
+const mongodb = require('mongodb');
+const utils = require('./utils');
+const mongodb_config = require('../config/index').mongodb_config;
+
+const MongoClient = mongodb.MongoClient;
+const url = 'mongodb://'+mongodb_config.url+':27017/';
+const db_name = mongodb_config.db;
 
 class TableDefine{
-	constructor(table_name){
-		this.table_name = table_name
+	constructor({table_name, db_fidles=[], db_consts={}, db_index=[]}={}){
+		// inito
+		if(!table_name) throw new Error('no table name');
+		this.client = null;
+		this.table_name = table_name;
+		if(db_fidles){
+			for(let key of db_fidles){
+				this[key] = key
+			}
+		}
+		if(db_consts){
+			for(let key in db_consts){
+				this[key] = db_consts[key]
+			}
+		}
+
+		this.db_index = db_index;
+		
 	}
 
 	async call_mongo(func_name, args){
 		let _this = this;	
-		let client = await MongoClient.connect(url);
-		if(utils.checkError(client)) throw client;
+		this.client = await MongoClient.connect(url);
+		if(utils.checkError(this.client)) throw this.client;
 		console.log('mongodb connect');
-		let db = client.db(mongodb_config.db);
+		let db = this.client.db(db_name);
 		try{
 			let t1 = new Date().getTime();
 			var res = db.collection(_this.table_name)[func_name](...args);
@@ -37,7 +55,8 @@ class TableDefine{
 		if(project) res = res.project(project);
 		let list = await res.toArray();
 		if(utils.checkError(list)) throw list;
-
+		
+		this.client.close();
 		return list;
 	}
 
@@ -45,6 +64,7 @@ class TableDefine{
 		let args = [query];
 		let res = await this.call_mongo('count', args);
 		if(utils.checkError(res)) throw res;
+		this.client.close();
 		return res
 	}
 
@@ -52,6 +72,7 @@ class TableDefine{
 		let args = [ducoment];
 		let res = await this.call_mongo('insertOne', args);
 		if(utils.checkError(res)) throw res;
+		this.client.close();
 		return res.ops[0]
 	}
 
@@ -59,6 +80,7 @@ class TableDefine{
 		let args = [ducoments];
 		let res = await this.call_mongo('insertMany', args);
 		if(utils.checkError(res)) throw res;
+		this.client.close();
 		return res.ops
 	}
 
@@ -66,6 +88,7 @@ class TableDefine{
 		let args = [query, update, {multi:true,upsert:upsert}]
 		let res = await this.call_mongo('updateOne', args);
 		if(utils.checkError(res)) throw res;
+		this.client.close();
 		return res.result
 	}
 
@@ -73,6 +96,7 @@ class TableDefine{
 		let args = [query, update, {multi:false,upsert:upsert}]
 		let res = await this.call_mongo('updateMany', args);
 		if(utils.checkError(res)) throw res;
+		this.client.close();
 		return res.result
 	}
 
@@ -80,6 +104,7 @@ class TableDefine{
 		let args = [query]
 		let res = await this.call_mongo('deleteOne', args);
 		if(utils.checkError(res)) throw res;
+		this.client.close();
 		return res.result
 	}
 
@@ -87,6 +112,7 @@ class TableDefine{
 		let args = [query]
 		let res = await this.call_mongo('deleteMany', args);
 		if(utils.checkError(res)) throw res;
+		this.client.close();
 		return res.result
 	}
 
@@ -96,7 +122,19 @@ class TableDefine{
 		if(utils.checkError(res)) throw res;
 		let list = await res.toArray();
 		if(utils.checkError(list)) throw list;
+		this.client.close();
 		return list
+	}
+
+	async createIndex(){
+		for(let dd of this.db_index){
+			let args = [dd['key'],{'unique':dd['unique']}]
+			let res = await this.call_mongo('createIndex', args);
+			if(utils.checkError(res)) throw res;
+			console.log(res)
+			this.client.close();
+		}	
+		return 0;
 	}
 }
 
