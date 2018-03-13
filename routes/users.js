@@ -1,3 +1,4 @@
+// 子路由文件
 var express = require('express');
 var router = express.Router();
 
@@ -11,11 +12,11 @@ router.get('/', function(req, res, next) {
 router.get('/find', function(req, res, next) {
 	let data = {
 		project:{_id:0}
-	}	
+	};	
 	db.Test.find({},data).then((list) => {
 		res.send(JSON.stringify(list));
 	}).catch((e) => {
-		res.send(e)	
+		res.send(e);
 	});
 });
 

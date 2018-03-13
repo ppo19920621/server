@@ -23,7 +23,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/static',express.static(path.join(__dirname, config.static)));
+app.use('/static',express.static(path.join(__dirname, config.STATIC)));
 
 app.use('/', index);
 app.use('/users', users);

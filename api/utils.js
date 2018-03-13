@@ -1,9 +1,9 @@
-
+// utils.js 工具类函数模块
 function checkError(obj){
 	if(obj.toString().search('Error') === -1){
-		return false
+		return false;
 	}else{
-		return true
+		return true;
 	}
 }
 
@@ -12,4 +12,4 @@ function checkError(obj){
 
 module.exports = {
 	checkError
-}
+};

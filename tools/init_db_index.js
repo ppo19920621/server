@@ -1,3 +1,4 @@
+// 脚本文件，用来创建数据表的索引
 const db = require('../db/index');
 
 async function main(){

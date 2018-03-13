@@ -1,9 +1,10 @@
+// 数据表结构模块 定义数据表的名字，字段，属性和索引
 const mongo = require('../api/mongo');
 
-const data = {}
+const MODEL = {};
 
 { //test
-	let dd = {
+	let data = {
 		table_name:'test',
 		db_fidles:[
 			'id',
@@ -21,11 +22,10 @@ const data = {}
 			{
 				'key':{'age':-1},
 				'unique':false
-			}
-		],
+			},
+		]
 	}
-	let Test = new mongo(dd);
-	data['Test'] = Test
+	MODEL['Test'] = new mongo(data);
 }
 
-module.exports = data
+module.exports = MODEL;
