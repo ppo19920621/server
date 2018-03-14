@@ -46,14 +46,11 @@ class TableDefine{
 		return res;
 	}
 	
-	async find(query={}, {sort=null, skip=null, limit=null, project=null}={}){
-		let args = [query];
+	async find(query={}, options={}){
+		let args = [query, options];
 		let res = await this.callMongo('find', args);
 		if(utils.checkError(res)) throw res;
-		if(sort) res = res.sort(sort);
-		if(skip) res = res.skip(skip);
-		if(limit) res = res.limit(limit);
-		if(project) res = res.project(project);
+
 		let list = await res.toArray();
 		if(utils.checkError(list)) throw list;
 		
@@ -61,64 +58,72 @@ class TableDefine{
 		return list;
 	}
 
-	async count(query={}){
-		let args = [query];
+	async findAndModify(query={}, sort=[], update={}, options={}){
+		let args = [query, sort, update, options];
 		let res = await this.callMongo('count', args);
 		if(utils.checkError(res)) throw res;
 		this.client.close();
 		return res;
 	}
 
-	async insertOne(ducoment={}){
-		let args = [ducoment];
+	async count(query={}, options={}){
+		let args = [query, options];
+		let res = await this.callMongo('count', args);
+		if(utils.checkError(res)) throw res;
+		this.client.close();
+		return res;
+	}
+
+	async insertOne(ducoment={}, options={}){
+		let args = [ducoment, options];
 		let res = await this.callMongo('insertOne', args);
 		if(utils.checkError(res)) throw res;
 		this.client.close();
 		return res.ops[0];
 	}
 
-	async insertMany(ducoments=[]){
-		let args = [ducoments];
+	async insertMany(ducoments=[], options={}){
+		let args = [ducoments, options];
 		let res = await this.callMongo('insertMany', args);
 		if(utils.checkError(res)) throw res;
 		this.client.close();
 		return res.ops;
 	}
 
-	async updateOne(query={}, update={}, upsert=false){
-		let args = [query, update, {multi:true,upsert:upsert}];
+	async updateOne(query={}, update={}, options={}){
+		let args = [query, update, options];
 		let res = await this.callMongo('updateOne', args);
 		if(utils.checkError(res)) throw res;
 		this.client.close();
 		return res.result;
 	}
 
-	async updateMany(query={}, update={}, upsert=false){
-		let args = [query, update, {multi:false,upsert:upsert}];
+	async updateMany(query={}, update={}, options={}){
+		let args = [query, update, options];
 		let res = await this.callMongo('updateMany', args);
 		if(utils.checkError(res)) throw res;
 		this.client.close();
 		return res.result;
 	}
 
-	async deleteOne(query={}){
-		let args = [query];
+	async deleteOne(query={}, options={}){
+		let args = [query, options];
 		let res = await this.callMongo('deleteOne', args);
 		if(utils.checkError(res)) throw res;
 		this.client.close();
 		return res.result;
 	}
 
-	async deleteMany(query={}){
-		let args = [query];
+	async deleteMany(query={}, options={}){
+		let args = [query, options];
 		let res = await this.callMongo('deleteMany', args);
 		if(utils.checkError(res)) throw res;
 		this.client.close();
 		return res.result;
 	}
 
-	async aggregate(pipeline){
-		let args = [pipeline];
+	async aggregate(pipeline={}, options={}){
+		let args = [pipeline, options];
 		let res = await this.callMongo('aggregate', args);
 		if(utils.checkError(res)) throw res;
 		let list = await res.toArray();
