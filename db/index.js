@@ -3,20 +3,47 @@ const mongo = require('../api/mongo');
 
 const MODEL = {};
 
-{ //test
+{ //IdCursor
 	let data = {
-		table_name:'test',
+		table_name:'id_cursor',
 		db_fidles:[
-			'id',
-			'name',
-			'age'
+			'type',	
+			'value',
 		],
 		db_consts:{
-			'type':1
+			'TYPE_UID':'type_uid',
+			'VALUE_ID':10000,
 		},
 		db_index:[
 			{
-				'key':{'id':1},
+				'key':{'type':1},
+				'unique':true
+			},
+		]
+	}
+	MODEL['IdCursor'] = new mongo(data);
+}
+
+{ //user
+	let data = {
+		table_name:'user',
+		db_fidles:[
+			'uid',		//uid
+			'account',	//帐号名
+			'pwd',		//密码 md5加密
+
+			'reg_time',	//注册时间
+			'nickname',	//昵称
+			'sex',		//性别
+			'age',		//年龄
+		],
+		db_consts:{
+			'SEX_MALE':1,	//男
+			'SEX_FEMALE':2,	//女
+		},
+		db_index:[
+			{
+				'key':{'uid':1},
 				'unique':true
 			},
 			{
@@ -25,7 +52,7 @@ const MODEL = {};
 			},
 		]
 	}
-	MODEL['Test'] = new mongo(data);
+	MODEL['User'] = new mongo(data);
 }
 
 module.exports = MODEL;

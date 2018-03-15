@@ -60,7 +60,7 @@ class TableDefine{
 
 	async findAndModify(query={}, sort=[], update={}, options={}){
 		let args = [query, sort, update, options];
-		let res = await this.callMongo('count', args);
+		let res = await this.callMongo('findAndModify', args);
 		if(utils.checkError(res)) throw res;
 		this.client.close();
 		return res;
