@@ -9,12 +9,12 @@ const utils = require('../api/utils');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-	res.send('respond with a resource');
+	res.render('user',{});
 });
 
-router.get('/sign_up', function(req, res, next) {
+router.post('/register', function(req, res, next) {
 	console.log(req.session);
-	let params = req.query;
+	let params = req.body;
 	let account = params.account;
 	let pwd = params.pwd;
 	let re_pwd = params.re_pwd;
@@ -38,9 +38,9 @@ router.get('/sign_up', function(req, res, next) {
 
 });
 
-router.get('/login', function(req, res, next) {
+router.post('/login', function(req, res, next) {
 	console.log(req.session);
-	let params = req.query;
+	let params = req.body;
 	let account = params.account;
 	let pwd = params.pwd;
 	
@@ -56,6 +56,17 @@ router.get('/login', function(req, res, next) {
 		res.send(JSON.stringify(e));
 	});
 
+});
+
+router.get('/get_user_info', function(req, res, next) {
+	console.log(req.session);
+	let info = req.session.user;
+	console.log(info)
+	if(info){
+		res.json(utils.reqDict(0, '', {'info':info}));
+	}else{
+		res.json(utils.reqDict(-2,'没登录'))
+	}
 });
 
 router.get('/layout', function(req, res, next) {

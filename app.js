@@ -10,7 +10,7 @@ var session = require('client-sessions');
 var config = require('./config/index');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var user = require('./routes/user');
 
 var app = express();
 
@@ -34,7 +34,7 @@ app.use(session({
 }));
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/user', user);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
