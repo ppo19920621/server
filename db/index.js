@@ -1,5 +1,6 @@
 // 数据表结构模块 定义数据表的名字，字段，属性和索引
 const mongo = require('../api/mongo');
+const TD = mongo.TableDefine;
 
 const MODEL = {};
 
@@ -21,7 +22,7 @@ const MODEL = {};
 			},
 		]
 	}
-	MODEL['IdCursor'] = new mongo(data);
+	MODEL['IdCursor'] = new TD(data);
 }
 
 { //user
@@ -52,7 +53,7 @@ const MODEL = {};
 			},
 		]
 	}
-	MODEL['User'] = new mongo(data);
+	MODEL['User'] = new TD(data);
 }
 
 module.exports = MODEL;

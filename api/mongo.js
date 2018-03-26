@@ -145,4 +145,6 @@ class TableDefine{
 }
 
 
-module.exports = TableDefine;
+module.exports = {
+	TableDefine
+}
