@@ -9,6 +9,7 @@ const utils = require('../api/utils');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+	console.log(req.session);
 	res.render('user',{});
 });
 
