@@ -2,7 +2,6 @@
 const mongo = require('../api/mongo');
 const TD = mongo.TableDefine;
 
-const MODEL = {};
 
 { //IdCursor
 	let data = {
@@ -22,7 +21,7 @@ const MODEL = {};
 			},
 		]
 	}
-	MODEL['IdCursor'] = new TD(data);
+	exports['IdCursor'] = new TD(data);
 }
 
 { //user
@@ -53,7 +52,6 @@ const MODEL = {};
 			},
 		]
 	}
-	MODEL['User'] = new TD(data);
+	exports['User'] = new TD(data);
 }
 
-module.exports = MODEL;

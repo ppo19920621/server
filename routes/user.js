@@ -53,6 +53,7 @@ router.post('/login', function(req, res, next) {
 		res.json(r);
 	})
 	.catch(e => {
+		console.log('error');
 		console.log(e);
 		res.send(JSON.stringify(e));
 	});
