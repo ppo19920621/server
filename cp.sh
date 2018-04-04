@@ -8,3 +8,4 @@
 
 rm -rf views
 cp -r ../myapp/dist views
+sh /etc/init.d/fnode restart

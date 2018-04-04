@@ -27,7 +27,7 @@ router.post('/register', function(req, res, next) {
 	
 	logic.signUp(account, pwd).then(r => {
 		if(r.result === 0){
-			req.session.user = r.info;
+			utils.setUser(req, r.info)
 		}
 		console.log(r);
 		res.json(r);
@@ -47,7 +47,7 @@ router.post('/login', function(req, res, next) {
 	
 	logic.login(account, pwd).then(r => {
 		if(r.result === 0){
-			req.session.user = r.info;
+			utils.setUser(req, r.info)
 		}
 		console.log(r);
 		res.json(r);
@@ -62,7 +62,7 @@ router.post('/login', function(req, res, next) {
 
 router.get('/get_user_info', function(req, res, next) {
 	console.log(req.session);
-	let info = req.session.user;
+	let info = utils.getUser(req);
 	console.log(info)
 	if(info){
 		res.json(utils.reqDict(0, '', {'info':info}));
@@ -73,7 +73,7 @@ router.get('/get_user_info', function(req, res, next) {
 
 router.get('/layout', function(req, res, next) {
 	console.log(req.session);
-	delete req.session.user;
+	utils.delUser(req)
 
 	res.json(utils.reqDict());
 });

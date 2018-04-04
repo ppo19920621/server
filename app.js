@@ -30,7 +30,7 @@ app.use(session({
 	cookieName:'session',
 	secret:'pyl@pyl',
 	duration:30*60*1000,
-	activeDuration:5*60*1000,
+	activeDuration:30*60*1000,
 }));
 
 app.use('/', index);

@@ -21,3 +21,14 @@ exports.reqDict = function(result=0, reason='', data={}){
 	return req;
 }
 
+exports.getUser = function(req){
+	return req.session.user;
+}
+
+exports.setUser = function(req, user){
+	req.session.user = 	user;
+}
+
+exports.delUser = function(req){
+	delete req.session.user
+}
