@@ -19,6 +19,12 @@ async function _genUserId(){
 	return res.value['value']
 }
 
+function filterUser(user){
+	delete user['_id'];
+	delete user['pwd'];
+	return user;
+}
+
 exports.signUp = async function(account, pwd){
 	let list = await db.User.find({'account':account});
 	if(list.length) return utils.reqDict(-2,'has this account');
@@ -29,10 +35,9 @@ exports.signUp = async function(account, pwd){
 		'pwd':md5(pwd),
 		'reg_time':new Date().getTime(),
 	}
-	let res = await db.User.insertOne(doc);
-	delete res['_id'];
-	delete res['pwd'];
-	return utils.reqDict(0,'',{'info':res});
+	let info = await db.User.insertOne(doc);
+	info = filterUser(info)
+	return utils.reqDict(0,'',{'info':info});
 }
 
 exports.login = async function(account, pwd){
@@ -42,10 +47,15 @@ exports.login = async function(account, pwd){
 	if(info.pwd !== md5(pwd)) 
 		return utils.reqDict(-3, 'pwd error');
 
-	delete info['_id'];
-	delete info['pwd'];
+	info = filterUser(info)
 	return utils.reqDict(0, '', {'info':info});
+}
 
+exports.getUser = async function(uid){
+	let info = await db.User.find({'uid':uid})[0];
+	if(!info) return {};
+	info = filterUser(info);
+	return info;
 }
 
 
