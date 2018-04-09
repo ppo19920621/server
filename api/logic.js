@@ -19,7 +19,7 @@ async function _genUserId(){
 	return res.value['value']
 }
 
-function filterUser(user){
+function _filterUser(user){
 	delete user['_id'];
 	delete user['pwd'];
 	return user;
@@ -36,7 +36,7 @@ exports.signUp = async function(account, pwd){
 		'reg_time':new Date().getTime(),
 	}
 	let info = await db.User.insertOne(doc);
-	info = filterUser(info)
+	info = _filterUser(info)
 	return utils.reqDict(0,'',{'info':info});
 }
 
@@ -47,14 +47,14 @@ exports.login = async function(account, pwd){
 	if(info.pwd !== md5(pwd)) 
 		return utils.reqDict(-3, 'pwd error');
 
-	info = filterUser(info)
+	info = _filterUser(info)
 	return utils.reqDict(0, '', {'info':info});
 }
 
 exports.getUser = async function(uid){
 	let info = await db.User.find({'uid':uid})[0];
 	if(!info) return {};
-	info = filterUser(info);
+	info = _filterUser(info);
 	return info;
 }
 
