@@ -1,7 +1,10 @@
 // redis 封装模块
+<<<<<<< 093b64e940598ae6566016d2d996bb6a1868db60
 // 返回值是promise
 // 用await let red = await cache.set('test', 'test');
 // 用promise cache.get('test').then(res => { console.log(res)})
+=======
+>>>>>>> 封装redis模块
 
 const redis = require('redis');
 const config = require('../config');
