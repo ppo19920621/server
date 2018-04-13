@@ -1,4 +1,7 @@
 // redis 封装模块
+// 返回值是promise
+// 用await let red = await cache.set('test', 'test');
+// 用promise cache.get('test').then(res => { console.log(res)})
 
 const redis = require('redis');
 const config = require('../config');
